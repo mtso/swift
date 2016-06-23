@@ -74,9 +74,27 @@ class ViewController: UIViewController {
         }
     }
     
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        /// Rotate entire view based on delta X.
+        for touch in touches {
+            let deltaX = touch.locationInView(view).x - touch.previousLocationInView(view).x
+            
+            let rotateBy = CATransform3DMakeRotation(deltaX * 0.01, 0, 1, 0)
+            let current = view.layer.transform
+            let newRotation = CATransform3DConcat(rotateBy, current)
+            
+            view.layer.transform = newRotation
+        }
+    }
+    
     /// Toggles crazy mode.
     @IBAction func bangButtonClick(sender: AnyObject) {
         crazyMode = !crazyMode
+        
+        // Reset rotation.
+        view.layer.transform = CATransform3DIdentity
+        
+        // Generate new shape layers.
         generateLayers(crazyMode: crazyMode)
     }
     
