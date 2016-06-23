@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     
     @IBOutlet var bangButton: UIButton!
 
+    /// The loaded CGPath from the SVG_Assets folder.
     let CGPath = PocketSVG.pathFromSVGFileNamed("lumpy_donuts").takeUnretainedValue()
     var paths = [CAShapeLayer]()
     
