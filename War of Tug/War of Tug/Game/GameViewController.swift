@@ -9,6 +9,10 @@
 import UIKit
 import GameplayKit
 
+let NormalScale = CATransform3DMakeScale(1, 1, 1)
+let ZeroScaleX  = CATransform3DMakeScale(0.001, 1, 1)
+let ZeroScaleY  = CATransform3DMakeScale(1, 0.001, 1)
+
 class GameViewController: UIViewController {
 
     /**
@@ -16,6 +20,8 @@ class GameViewController: UIViewController {
         it is configured in `viewDidLoad()`.
     */
     var stateMachine: GKStateMachine!
+    
+    let pullDistance: CGFloat = 20
     
     var playButton: UIButton?
     var rope: UIImageView?
@@ -34,42 +40,14 @@ class GameViewController: UIViewController {
         
         view.backgroundColor = UIColor.whiteColor()
         
-        let viewCenter = CGPoint(x: CGRectGetMidX(view.frame), y: CGRectGetMidY(view.frame))
-
-        var playButtonTitle: String?
-        if let asset = NSDataAsset(name: "play_button_title") {
-            playButtonTitle = String(data: asset.data, encoding: NSUTF8StringEncoding)
-        }
-
-        let buttonSize = CGSize(width: 160, height: 40)
-        
         playButton = UIButton(type: UIButtonType.System)
         playButton?.addTarget(self, action: #selector(playButtonClick), forControlEvents: .TouchUpInside)
         playButton?.backgroundColor = UIColor.grayColor()
-        
-        playButton?.frame = CGRect(
-            x: viewCenter.x - buttonSize.width / 2,
-            y: viewCenter.y - buttonSize.height / 2,
-            width: buttonSize.width,
-            height: buttonSize.height)
-
-        playButton?.setTitle(playButtonTitle, forState: .Normal)
         playButton?.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         playButton?.alpha = 0
-        
+
         rope = UIImageView(image: UIImage(named: "rope"))
-        rope?.frame = CGRect(x: viewCenter.x - rope!.frame.width / 2, y: viewCenter.y - rope!.frame.height / 2,
-                             width: rope!.frame.width, height: rope!.frame.height)
-        
-        let ropeShrunk = CATransform3DMakeScale(1, 0, 1)
-        rope?.layer.transform = ropeShrunk
-        
         threshold = UIImageView(image: UIImage(named: "threshold"))
-        threshold?.frame = CGRect(x: viewCenter.x - threshold!.frame.width / 2, y: viewCenter.y - threshold!.frame.height / 2,
-                             width: threshold!.frame.width, height: threshold!.frame.height)
-        
-        let thresholdShrunk = CATransform3DMakeScale(0, 1, 1)
-        threshold?.layer.transform = thresholdShrunk
         
         view.addSubview(threshold!)
         view.addSubview(rope!)
@@ -119,7 +97,7 @@ class GameViewController: UIViewController {
     
     func playerTugAction() {
         UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.rope!.frame.origin.y += 20
+            self.rope!.frame.origin.y += pullDistance
             }, completion: { _ in
                 self.checkGameOver()
         })
@@ -127,7 +105,7 @@ class GameViewController: UIViewController {
     
     func opponentTugAction() {
         UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.rope!.frame.origin.y -= 20
+            self.rope!.frame.origin.y -= pullDistance
             }, completion: { _ in
                 self.checkGameOver()
         })
@@ -143,20 +121,9 @@ class GameViewController: UIViewController {
     
     func update() {
         let timeSincePreviousUpdate = displayLink.timestamp - previousUpdateTime
-        
-        stateMachine.updateWithDeltaTime(timeSincePreviousUpdate)
-
         previousUpdateTime = displayLink.timestamp
-    }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        stateMachine.updateWithDeltaTime(timeSincePreviousUpdate)
     }
-    */
 
 }

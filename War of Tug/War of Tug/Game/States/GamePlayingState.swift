@@ -12,19 +12,7 @@ import GameplayKit
 class GamePlayingState: GameState {
 
     static let opponentTugInterval: NSTimeInterval = 1.0
-    var tugTimeCounter: NSTimeInterval = 0
-    
-    
-    override func didEnterWithPreviousState(previousState: GKState?) {
-        let extend = CATransform3DMakeScale(1, 1, 1)
-        let shrink = CATransform3DMakeScale(1, 0, 1)
-        UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseOut, animations: {
-            self.controller.rope?.layer.transform = extend
-            self.controller.threshold?.layer.transform = extend
-            self.controller.playButton?.layer.transform = shrink
-            
-            }, completion: nil)
-    }
+    var tugTimeCounter: NSTimeInterval = 0    
     
     override func updateWithDeltaTime(seconds: NSTimeInterval) {
         tugTimeCounter += seconds
@@ -33,6 +21,10 @@ class GamePlayingState: GameState {
             controller.opponentTugAction()
             tugTimeCounter = 0
         }
+    }
+    
+    override func willExitWithNextState(nextState: GKState) {
+        controller.threshold?.layer.transform = ZeroScaleX
     }
     
     override func isValidNextState(stateClass: AnyClass) -> Bool {
