@@ -1,5 +1,5 @@
 //
-//  BaseState.swift
+//  GameState.swift
 //  War of Tug
 //
 //  Created by Matthew Tso on 6/23/16.
@@ -9,11 +9,11 @@
 import UIKit
 import GameplayKit
 
-class BaseState: GKState {
+class GameState: GKState {
 
-    let game: GameViewController
+    unowned let controller: GameViewController
     
     init(game: GameViewController) {
-        self.game = game
+        controller = game
     }
 }

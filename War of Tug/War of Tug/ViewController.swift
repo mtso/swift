@@ -7,13 +7,18 @@
 //
 
 import UIKit
-import GameplayKit
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        let gameViewController = GameViewController()
+        
+        presentViewController(gameViewController, animated: false, completion: nil)
     }
 
     override func didReceiveMemoryWarning() {
