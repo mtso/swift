@@ -23,13 +23,19 @@ class GameViewController: UIViewController {
     
     let pullDistance: CGFloat = 20
     
-    var playButton: UIButton?
+    // Game objects
+    var button: UIButton?
     var rope: UIImageView?
     var threshold: UIImageView?
     
+    // Game update loop objects
     var displayLink: CADisplayLink!
-    
     var previousUpdateTime: NSTimeInterval = 0
+    
+    enum Entity {
+        case Player
+        case Opponent
+    }
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -40,18 +46,18 @@ class GameViewController: UIViewController {
         
         view.backgroundColor = UIColor.whiteColor()
         
-        playButton = UIButton(type: UIButtonType.System)
-        playButton?.addTarget(self, action: #selector(playButtonClick), forControlEvents: .TouchUpInside)
-        playButton?.backgroundColor = UIColor.grayColor()
-        playButton?.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        playButton?.alpha = 0
+        button = UIButton(type: UIButtonType.System)
+        button?.addTarget(self, action: #selector(buttonClick), forControlEvents: .TouchUpInside)
+        button?.backgroundColor = UIColor.grayColor()
+        button?.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        button?.alpha = 0
 
         rope = UIImageView(image: UIImage(named: "rope"))
         threshold = UIImageView(image: UIImage(named: "threshold"))
         
         view.addSubview(threshold!)
         view.addSubview(rope!)
-        view.addSubview(playButton!)
+        view.addSubview(button!)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -84,32 +90,32 @@ class GameViewController: UIViewController {
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         switch stateMachine.currentState {
         case is GamePlayingState:
-            playerTugAction()
+            tugAction(entity: .Player)
+//            playerTugAction()
 
         default:
             break
         }
     }
     
-    func playButtonClick() {
+    func buttonClick() {
         stateMachine.enterState(GamePlayingState.self)
     }
     
-    func playerTugAction() {
-        UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.rope!.frame.origin.y += pullDistance
-            }, completion: { _ in
-                self.checkGameOver()
-        })
+    func tugAction(entity who: Entity) -> () {
+
+        func tugAction() {
+            UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+                self.rope!.frame.origin.y += who == .Player ? self.pullDistance : -self.pullDistance
+                }, completion: { _ in
+                    self.checkGameOver()
+            })
+        }
+
+        return tugAction()
     }
     
-    func opponentTugAction() {
-        UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.rope!.frame.origin.y -= pullDistance
-            }, completion: { _ in
-                self.checkGameOver()
-        })
-    }
+
     
     func checkGameOver() {
         if rope?.frame.origin.y > threshold?.frame.origin.y {

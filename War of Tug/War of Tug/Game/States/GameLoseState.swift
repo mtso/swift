@@ -18,7 +18,7 @@ class GameLoseState: GameState {
             
             self.controller.rope?.frame.origin.y = self.controller.view.frame.origin.y - self.controller.rope!.frame.height
             
-            self.controller.playButton?.layer.transform = extend
+            self.controller.button?.layer.transform = extend
             
             }, completion: { _ in
                 self.stateMachine?.enterState(GameTransitionState)
@@ -29,7 +29,7 @@ class GameLoseState: GameState {
             lose_message = String(data: asset.data, encoding: NSUTF8StringEncoding)
         }
         
-        controller.playButton?.setTitle(lose_message, forState: .Normal)
+        controller.button?.setTitle(lose_message, forState: .Normal)
 
     }
 

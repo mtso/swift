@@ -33,34 +33,34 @@ class GameStartState: GameState {
             threshold.layer.transform = ZeroScaleX
         }
         
-        if let playButton = controller.playButton {
+        if let button = controller.button {
             let buttonSize = CGSize(width: 160, height: 40)
             
-            playButton.frame = CGRect(
+            button.frame = CGRect(
                 x: view.center.x - buttonSize.width / 2,
                 y: view.center.y - buttonSize.height / 2,
                 width: buttonSize.width,
                 height: buttonSize.height)
             
             UIView.animateWithDuration(0.5, animations: {
-                playButton.alpha = 1
-                playButton.layer.transform = NormalScale
+                button.alpha = 1
+                button.layer.transform = NormalScale
             })
         }
 
         
-        var playButtonTitle: String?
+        var buttonTitle: String?
         if let asset = NSDataAsset(name: "play_button_title") {
-            playButtonTitle = String(data: asset.data, encoding: NSUTF8StringEncoding)
+            buttonTitle = String(data: asset.data, encoding: NSUTF8StringEncoding)
         }
-        controller.playButton?.setTitle(playButtonTitle, forState: .Normal)
+        controller.button?.setTitle(buttonTitle, forState: .Normal)
     }
     
     override func willExitWithNextState(nextState: GKState) {
         UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseOut, animations: {
             self.controller.rope?.layer.transform = NormalScale
             self.controller.threshold?.layer.transform = NormalScale
-            self.controller.playButton?.layer.transform = ZeroScaleY
+            self.controller.button?.layer.transform = ZeroScaleY
             }, completion: nil)
     }
     

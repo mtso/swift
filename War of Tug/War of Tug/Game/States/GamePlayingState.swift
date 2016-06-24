@@ -18,7 +18,7 @@ class GamePlayingState: GameState {
         tugTimeCounter += seconds
         
         if tugTimeCounter > GamePlayingState.opponentTugInterval {
-            controller.opponentTugAction()
+            controller.tugAction(entity: .Opponent)
             tugTimeCounter = 0
         }
     }

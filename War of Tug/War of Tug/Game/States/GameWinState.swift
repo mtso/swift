@@ -17,7 +17,7 @@ class GameWinState: GameState {
         UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseIn, animations: {
             self.controller.rope?.frame.origin.y = self.controller.view.frame.height
             
-            self.controller.playButton?.layer.transform = extend
+            self.controller.button?.layer.transform = extend
             
             }, completion: { _ in
                 self.stateMachine?.enterState(GameTransitionState)
@@ -28,7 +28,7 @@ class GameWinState: GameState {
             win_message = String(data: asset.data, encoding: NSUTF8StringEncoding)
         }
 
-        controller.playButton?.setTitle(win_message, forState: .Normal)
+        controller.button?.setTitle(win_message, forState: .Normal)
     }
     
     override func isValidNextState(stateClass: AnyClass) -> Bool {
