@@ -54,7 +54,7 @@
 			isa = PBXGroup;
 			children = (
 				7F41CD481D1CBA6C008B8A36 /* README.md */,
-				7F41CD441D1CBA07008B8A36 /* Game */,
+				7F41CD441D1CBA07008B8A36 /* War of Tug */,
 				7F41CD2D1D1CB902008B8A36 /* War of Tug (iOS) */,
 				7F41CD2C1D1CB902008B8A36 /* Products */,
 			);
@@ -81,14 +81,14 @@
 			path = "War of Tug";
 			sourceTree = "<group>";
 		};
-		7F41CD441D1CBA07008B8A36 /* Game */ = {
+		7F41CD441D1CBA07008B8A36 /* War of Tug */ = {
 			isa = PBXGroup;
 			children = (
 				7F41CD421D1CB9EC008B8A36 /* GameViewController.swift */,
 				7F41CD471D1CBA53008B8A36 /* States */,
 				7F41CD351D1CB902008B8A36 /* Assets.xcassets */,
 			);
-			name = Game;
+			name = "War of Tug";
 			sourceTree = "<group>";
 		};
 		7F41CD471D1CBA53008B8A36 /* States */ = {

@@ -47,20 +47,24 @@ class GameStartState: GameState {
                 button.layer.transform = NormalScale
             })
         }
-
         
-        var buttonTitle: String?
-        if let asset = NSDataAsset(name: "play_button_title") {
-            buttonTitle = String(data: asset.data, encoding: NSUTF8StringEncoding)
+        var playTitle: String?
+        if let asset = NSDataAsset(name: "play_title") {
+            playTitle = String(data: asset.data, encoding: NSUTF8StringEncoding)
         }
-        controller.button?.setTitle(buttonTitle, forState: .Normal)
+        controller.button?.setTitle(playTitle, forState: .Normal)
     }
     
     override func willExitWithNextState(nextState: GKState) {
+        self.controller.rope?.alpha = 1
+
         UIView.animateWithDuration(0.5, delay: 0, options: .CurveEaseOut, animations: {
-            self.controller.rope?.layer.transform = NormalScale
-            self.controller.threshold?.layer.transform = NormalScale
+            
             self.controller.button?.layer.transform = ZeroScaleY
+            
+            self.controller.threshold?.layer.transform = NormalScale
+            self.controller.rope?.layer.transform = NormalScale
+            
             }, completion: nil)
     }
     

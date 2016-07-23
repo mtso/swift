@@ -16,22 +16,24 @@ let ZeroScaleY  = CATransform3DMakeScale(1, 0.001, 1)
 class GameViewController: UIViewController {
 
     /**
-        Controls the state of the game. This is not modified after
-        it is configured in `viewDidLoad()`.
+        Controls the state of the game. This is not modified 
+        after it is configured in `viewDidLoad()`.
     */
     var stateMachine: GKStateMachine!
     
-    let pullDistance: CGFloat = 20
-    
-    // Game objects
+    /** 
+        Multipurpose game beginning button that 
+        also serves as the game over text label.
+     */
     var button: UIButton?
     var rope: UIImageView?
     var threshold: UIImageView?
-    
-    // Game update loop objects
+
+    /// The `CADisplayLink` object that calls the update loop.
     var displayLink: CADisplayLink!
     var previousUpdateTime: NSTimeInterval = 0
     
+    /// Used to determine who is tugging.
     enum Entity {
         case Player
         case Opponent
@@ -50,10 +52,12 @@ class GameViewController: UIViewController {
         button?.addTarget(self, action: #selector(buttonClick), forControlEvents: .TouchUpInside)
         button?.backgroundColor = UIColor.grayColor()
         button?.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        button?.alpha = 0
 
         rope = UIImageView(image: UIImage(named: "rope"))
         threshold = UIImageView(image: UIImage(named: "threshold"))
+        
+        button?.alpha = 0
+        rope?.alpha = 0
         
         view.addSubview(threshold!)
         view.addSubview(rope!)
@@ -75,13 +79,18 @@ class GameViewController: UIViewController {
             GameLoseState(game: self),
             GameTransitionState(game: self),
         ])
-        
     }
     
     override func viewDidAppear(animated: Bool) {
+        // Enter GameStartState after view appears 
+        // because of the intro animation to the play button.
         stateMachine.enterState(GameStartState.self)
     }
 
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -91,7 +100,6 @@ class GameViewController: UIViewController {
         switch stateMachine.currentState {
         case is GamePlayingState:
             tugAction(entity: .Player)
-//            playerTugAction()
 
         default:
             break
@@ -102,16 +110,21 @@ class GameViewController: UIViewController {
         stateMachine.enterState(GamePlayingState.self)
     }
     
+    /// Returns a tug action in a direction based on who is tugging.
     func tugAction(entity who: Entity) -> () {
+        
+        let tugDistance: CGFloat = 20
 
         func tugAction() {
-            UIView.animateWithDuration(0.1, delay: 0, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-                self.rope!.frame.origin.y += who == .Player ? self.pullDistance : -self.pullDistance
+            UIView.animateWithDuration(0.1, delay: 0, options: .CurveEaseOut, animations: {
+                
+                let tugDirection = who == .Player ? tugDistance : -tugDistance
+                self.rope!.frame.origin.y += tugDirection
+                
                 }, completion: { _ in
                     self.checkGameOver()
             })
         }
-
         return tugAction()
     }
     

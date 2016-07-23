@@ -9,15 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
     
     override func viewDidAppear(animated: Bool) {
+        
         let gameViewController = GameViewController()
         
+        // Present the game's view controller.
         presentViewController(gameViewController, animated: false, completion: nil)
     }
 
@@ -25,7 +22,6 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
 
 }
 

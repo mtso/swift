@@ -23,12 +23,12 @@ class GameWinState: GameState {
                 self.stateMachine?.enterState(GameTransitionState)
         })
         
-        var win_message: String?
-        if let asset = NSDataAsset(name: "win_message") {
-            win_message = String(data: asset.data, encoding: NSUTF8StringEncoding)
+        var win_title: String?
+        if let asset = NSDataAsset(name: "win_title") {
+            win_title = String(data: asset.data, encoding: NSUTF8StringEncoding)
         }
 
-        controller.button?.setTitle(win_message, forState: .Normal)
+        controller.button?.setTitle(win_title, forState: .Normal)
     }
     
     override func isValidNextState(stateClass: AnyClass) -> Bool {

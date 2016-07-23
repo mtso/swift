@@ -24,12 +24,12 @@ class GameLoseState: GameState {
                 self.stateMachine?.enterState(GameTransitionState)
         })
 
-        var lose_message: String?
-        if let asset = NSDataAsset(name: "lose_message") {
-            lose_message = String(data: asset.data, encoding: NSUTF8StringEncoding)
+        var lose_title: String?
+        if let asset = NSDataAsset(name: "lose_title") {
+            lose_title = String(data: asset.data, encoding: NSUTF8StringEncoding)
         }
         
-        controller.button?.setTitle(lose_message, forState: .Normal)
+        controller.button?.setTitle(lose_title, forState: .Normal)
 
     }
 
